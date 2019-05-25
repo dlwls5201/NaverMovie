@@ -6,6 +6,9 @@ buildscript {
         //support lib
         library_version = '1.0.0'
 
+        ////viewModel and liveData
+        lifecycle_version = "2.0.0"
+
         //constraint layout version
         constraint_layout_version = '1.1.3'
 

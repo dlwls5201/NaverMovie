@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -26,6 +28,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -35,6 +40,9 @@ dependencies {
     implementation "com.google.android.material:material:$library_version"
     implementation "androidx.cardview:cardview:$library_version"
     implementation "androidx.recyclerview:recyclerview:$library_version"
+
+    //viewModel and liveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     //constraint
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"

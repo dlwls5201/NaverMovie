@@ -10,5 +10,7 @@ data class MovieItem (
     @field:SerializedName("pubDate") val pubDate: String,
     @field:SerializedName("director") val director: String,
     @field:SerializedName("actor") val actor: String,
-    @field:SerializedName("userRating") val userRating: String
+    @field:SerializedName("userRating") val userRating: String,
+
+    var clickCheck: Int = 0
 )
