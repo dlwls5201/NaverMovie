@@ -1,4 +1,4 @@
-package com.tistory.black_jin0427.navermovie.viewModel
+package com.tistory.black_jin0427.navermovie.viewModel.movieList
 
 import android.util.Log
 import android.view.View
@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.tistory.black_jin0427.navermovie.adapter.MainAdapter
 import com.tistory.black_jin0427.navermovie.api.NaverApi
 import com.tistory.black_jin0427.navermovie.api.model.MovieItem
+import com.tistory.black_jin0427.navermovie.viewModel.DisposableViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -40,7 +41,7 @@ class MovieListViewModel(
                 .doOnSubscribe {
                     showProgress()
                 }
-                .doOnSubscribe {
+                .doOnSuccess {
                     hideProgress()
                 }
                 .doOnError {
@@ -60,7 +61,7 @@ class MovieListViewModel(
     }
 
     private fun hideProgress() {
-        _progressView.value = View.INVISIBLE
+        _progressView.value = View.GONE
     }
 
 }

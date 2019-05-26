@@ -1,24 +1,25 @@
-package com.tistory.black_jin0427.navermovie
+package com.tistory.black_jin0427.navermovie.utils
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.black_jin0427.navermovie.adapter.MainAdapter
 import com.tistory.black_jin0427.navermovie.api.model.MovieItem
+import com.tistory.black_jin0427.navermovie.setImageWithGlide
 
 @BindingAdapter("android:url")
 fun ImageView.setImageByGlide(url: String) {
     setImageWithGlide(url)
 }
 
-@BindingAdapter("bind_adapter")
+@BindingAdapter("app:bind_adapter")
 fun setBindAdapter(view: RecyclerView, adapter: MainAdapter?) {
     adapter?.let {
         view.adapter = it
     }
 }
 
-@BindingAdapter("bind_items")
+@BindingAdapter("app:bind_items")
 fun setBindItems(view : RecyclerView, items : List<MovieItem>?) {
     items?.let {
 

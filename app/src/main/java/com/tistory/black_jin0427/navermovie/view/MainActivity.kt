@@ -1,13 +1,15 @@
-package com.tistory.black_jin0427.navermovie
+package com.tistory.black_jin0427.navermovie.view
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
+import com.tistory.black_jin0427.navermovie.BaseActivity
+import com.tistory.black_jin0427.navermovie.R
 import com.tistory.black_jin0427.navermovie.adapter.MainAdapter
 import com.tistory.black_jin0427.navermovie.api.ApiProvider
 import com.tistory.black_jin0427.navermovie.api.model.MovieItem
 import com.tistory.black_jin0427.navermovie.databinding.ActivityMainBinding
-import com.tistory.black_jin0427.navermovie.viewModel.MovieListViewModel
-import com.tistory.black_jin0427.navermovie.viewModel.MovieListViewModelFactory
+import com.tistory.black_jin0427.navermovie.viewModel.movieList.MovieListViewModel
+import com.tistory.black_jin0427.navermovie.viewModel.movieList.MovieListViewModelFactory
 import org.jetbrains.anko.toast
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), MainAdapter.OnItemClickListener {
@@ -25,8 +27,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), MainAdapter.OnItemClic
         super.onCreate(savedInstanceState)
 
         // 뷰 모델 팩토리 선언
-        movieListViewModelFactory = MovieListViewModelFactory(mainAdapter,
-            ApiProvider.provideNaverApi())
+        movieListViewModelFactory = MovieListViewModelFactory(
+            mainAdapter,
+            ApiProvider.provideNaverApi()
+        )
 
         // 뷰 모델 초기화 및 관찰자 연결
         movieListViewModel = ViewModelProviders.of(this, movieListViewModelFactory)

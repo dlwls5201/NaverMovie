@@ -1,4 +1,4 @@
-package com.tistory.black_jin0427.navermovie.viewModel
+package com.tistory.black_jin0427.navermovie.viewModel.movieList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

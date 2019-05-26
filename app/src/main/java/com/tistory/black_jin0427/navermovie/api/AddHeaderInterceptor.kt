@@ -5,15 +5,15 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 // https://github.com/square/okhttp/wiki/Interceptors
-class AddHeaderInterceptor: Interceptor {
+class AddHeaderInterceptor : Interceptor {
 
-    override fun intercept(chain: Interceptor.Chain): Response {
-
-        val builder = chain.request().newBuilder().apply {
-            addHeader("X-Naver-Client-Id", BuildConfig.MOVIE_CLIENT_ID)
-            addHeader("X-Naver-Client-Secret", BuildConfig.MOVIE_CLIENT_SECRET)
-        }
-
-        return chain.proceed(builder.build())
+    override fun intercept(chain: Interceptor.Chain) = chain.run {
+        proceed(
+            request()
+                .newBuilder()
+                .addHeader("X-Naver-Client-Id", BuildConfig.MOVIE_CLIENT_ID)
+                .addHeader("X-Naver-Client-Secret", BuildConfig.MOVIE_CLIENT_SECRET)
+                .build()
+        )
     }
 }
