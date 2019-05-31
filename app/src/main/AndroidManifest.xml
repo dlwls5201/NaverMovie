@@ -13,7 +13,6 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-
         <!-- android target sdk 28 : Apache HTTP 클라이언트 지원 중단 으로 인해 아래 설정 필요 -->
         <uses-library
                 android:name="org.apache.http.legacy"
@@ -21,7 +20,7 @@
 
         <activity android:name=".view.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
