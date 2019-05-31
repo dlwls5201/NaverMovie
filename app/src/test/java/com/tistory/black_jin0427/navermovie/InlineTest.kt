@@ -8,7 +8,7 @@ class InlineTest {
         fun notEmptyString(param: String)
     }
 
-    /*fun notEmptyString(param: String?, callback: Callback) {
+    fun notEmptyString(param: String?, callback: Callback) {
         if (!param.isNullOrEmpty()) {
             callback.notEmptyString(param)
         }
@@ -18,7 +18,7 @@ class InlineTest {
         if(!this.isNullOrEmpty()) {
             callback.notEmptyString(this)
         }
-    }*/
+    }
 
     fun String?.notNullMessage2(callback: String.() -> Unit) {
         if (!this.isNullOrEmpty()) {
@@ -38,7 +38,7 @@ class InlineTest {
 
         val message = "blackJin"
 
-        /*notEmptyString(message, object : Callback {
+        notEmptyString(message, object : Callback {
             override fun notEmptyString(param: String) {
                 println("notEmptyString $param")
             }
@@ -49,7 +49,7 @@ class InlineTest {
             override fun notEmptyString(param: String) {
                 println("notNullMessage1 $param")
             }
-        })*/
+        })
 
         message.notNullMessage2 {
             println("notNullMessage2 $this")
