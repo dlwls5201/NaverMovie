@@ -4,6 +4,7 @@
         <variable
                 name="item"
                 type="com.tistory.black_jin0427.navermovie.api.model.MovieItem"/>
+
         <variable
                 name="listener"
                 type="com.tistory.black_jin0427.navermovie.adapter.MainAdapter.OnItemClickListener"/>
@@ -45,7 +46,7 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="17sp"
                     android:textStyle="bold"
-                    android:text="@{item.title}"
+                    android:htmlText="@{item.title}"
                     tools:text="Black Jin"/>
 
             <TextView

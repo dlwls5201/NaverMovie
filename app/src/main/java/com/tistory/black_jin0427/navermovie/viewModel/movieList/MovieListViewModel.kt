@@ -16,44 +16,65 @@ class MovieListViewModel(
     private val api: NaverApi)
     : DisposableViewModel() {
 
+    private val _searchQuery = MutableLiveData<String>()
+    private val _emptyDataView = MutableLiveData<Int>()
     private val _progressView = MutableLiveData<Int>()
     private val _items = MutableLiveData<List<MovieItem>>()
     private val _adapter= MutableLiveData<MainAdapter>().apply { value =  mainAdapter }
 
     //mutableLiveData 를 immutable 하게 노출
     //ViewModel 내부에서는 Mutable 한 데이터를 외부에서는 Immutable 하게 사용하도록 제약을 주기 위함
+    val searchQuery: LiveData<String> get() = _searchQuery
+    val emptyDataView: LiveData<Int> get() = _emptyDataView
     val progressView: LiveData<Int> get() = _progressView
     val items: LiveData<List<MovieItem>> get() = _items
     val adapter: LiveData<MainAdapter> get() = _adapter
 
     init {
 
-        loadData()
+        showEmptyDataView()
+        hideProgress()
 
     }
 
-    private fun loadData() {
+    fun loadData(query: String) {
+
+        showProgress()
 
         addDisposable(
-            api.movie("마블")
+            api.movie(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    showProgress()
-                }
-                .doOnSuccess {
-                    hideProgress()
-                }
-                .doOnError {
-                    hideProgress()
-                }
                 .subscribe({
+
+                    if(it.items.isNullOrEmpty()) {
+                        showEmptyDataView()
+                    } else {
+                        hideEmptyDataView()
+                    }
+
                     _items.value = it.items
+
+                    setSearchQueryToNull()
+                    hideProgress()
+
                 },{ error
                     -> Log.e("blackJin", error.message)
                 })
         )
 
+    }
+
+    private fun setSearchQueryToNull() {
+        _searchQuery.value = null
+    }
+
+    private fun showEmptyDataView() {
+        _emptyDataView.value = View.VISIBLE
+    }
+
+    private fun hideEmptyDataView() {
+        _emptyDataView.value = View.GONE
     }
 
     private fun showProgress() {
