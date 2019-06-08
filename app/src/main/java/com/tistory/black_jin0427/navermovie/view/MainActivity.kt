@@ -1,54 +1,49 @@
 package com.tistory.black_jin0427.navermovie.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tistory.black_jin0427.navermovie.BaseActivity
 import com.tistory.black_jin0427.navermovie.R
 import com.tistory.black_jin0427.navermovie.adapter.MainAdapter
 import com.tistory.black_jin0427.navermovie.api.ApiProvider
 import com.tistory.black_jin0427.navermovie.api.model.MovieItem
-import com.tistory.black_jin0427.navermovie.databinding.ActivityMainBinding
 import com.tistory.black_jin0427.navermovie.utils.Dlog
-import com.tistory.black_jin0427.navermovie.viewModel.movieList.MovieListViewModel
-import com.tistory.black_jin0427.navermovie.viewModel.movieList.MovieListViewModelFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
-class MainActivity : BaseActivity<ActivityMainBinding>(), MainAdapter.OnItemClickListener {
+class MainActivity : BaseActivity(), MainAdapter.OnItemClickListener {
 
-    override val layoutResourceId = R.layout.activity_main
+    private val compositeDisposable = CompositeDisposable()
 
     private val mainAdapter by lazy {
         MainAdapter().apply { setClickListener(this@MainActivity) } }
 
-    private lateinit var movieListViewModel: MovieListViewModel
-
-    private lateinit var movieListViewModelFactory: MovieListViewModelFactory
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-        // 뷰 모델 팩토리 선언
-        movieListViewModelFactory = MovieListViewModelFactory(
-            mainAdapter,
-            ApiProvider.provideNaverApi()
-        )
+        hideProgress()
 
-        // 뷰 모델 초기화 및 관찰자 연결
-        movieListViewModel = ViewModelProviders.of(this, movieListViewModelFactory)
-            .get(MovieListViewModel::class.java)
+        with(rvActivityMain){
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = mainAdapter
+        }
 
-        // 데이터 바인딩에 뷰 모델 연결
-        viewDataBinding.model = movieListViewModel
-
-        // 데이터 바인딩에 LifecycleOwner 연결하여 liveData 를 DataBinding 과 사용 할 수 있게 함
-        viewDataBinding.lifecycleOwner = this
-
-        // search view 동작
-        viewDataBinding.svActivityMain.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        svActivityMain.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
-                text?.run {
-                    movieListViewModel.loadData(this)
+
+                text.let { query ->
+                    if(query.isNullOrEmpty()) {
+                        showEmptyData()
+                    } else {
+                        hideEmptyData()
+                        loadData(query)
+                    }
+
                 }
                 return false
             }
@@ -61,7 +56,54 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), MainAdapter.OnItemClic
         })
     }
 
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
+    }
+
     override fun onClick(movieItem: MovieItem) {
         toast(movieItem.title)
+    }
+
+    private fun loadData(query: String) {
+
+        ApiProvider.provideNaverApi().movie(query)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showProgress()
+            }
+            .doOnSuccess {
+                hideProgress()
+            }
+            .subscribe({
+
+                emptySearchView()
+                mainAdapter.setItems(it.items)
+
+            }){
+                Dlog.e(it.message)
+            }.also {
+                compositeDisposable.add(it)
+            }
+    }
+
+    private fun showProgress() {
+        pbActivityMain.visibility = View.VISIBLE
+    }
+
+    private fun hideProgress() {
+        pbActivityMain.visibility = View.GONE
+    }
+
+    private fun showEmptyData() {
+        tvActivityMainEmptyData.visibility = View.VISIBLE
+    }
+
+    private fun hideEmptyData() {
+        tvActivityMainEmptyData.visibility = View.GONE
+    }
+
+    private fun emptySearchView() {
+        svActivityMain.setQuery("",false)
     }
 }

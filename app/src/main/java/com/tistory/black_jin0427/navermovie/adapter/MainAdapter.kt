@@ -3,12 +3,13 @@ package com.tistory.black_jin0427.navermovie.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.black_jin0427.navermovie.R
-import com.tistory.black_jin0427.navermovie.api.model.Movie
-import com.tistory.black_jin0427.navermovie.databinding.ItemMovieBinding
 import com.tistory.black_jin0427.navermovie.api.model.MovieItem
+import com.tistory.black_jin0427.navermovie.setImageWithGlide
+import com.tistory.black_jin0427.navermovie.setTextFromHtml
 
 
 class MainAdapter: RecyclerView.Adapter<MainAdapter.MovieHolder>() {
@@ -26,9 +27,19 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MovieHolder>() {
 
         val item = items[position]
 
-        holder.binding?.let {
-            it.item = item
-            it.listener = clickListener
+        with(holder) {
+
+            ivItemMovie.setImageWithGlide(item.image)
+
+            tvItemMovieTitle.setTextFromHtml(item.title)
+            tvItemMovieSubTitle.setTextFromHtml(item.subtitle)
+            tvItemMovieLink.setTextFromHtml(item.link)
+            tvItemMovieActor.text = item.actor
+                .filter { it.toString() !=  "|" }
+
+            itemView.setOnClickListener {
+                clickListener?.onClick(item)
+            }
         }
     }
 
@@ -47,8 +58,11 @@ class MainAdapter: RecyclerView.Adapter<MainAdapter.MovieHolder>() {
 
     class MovieHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
-        val binding: ItemMovieBinding? = DataBindingUtil.bind(itemView)
-
+        val ivItemMovie: ImageView = itemView.findViewById(R.id.ivItemMovie)
+        val tvItemMovieTitle: TextView = itemView.findViewById(R.id.tvItemMovieTitle)
+        val tvItemMovieSubTitle: TextView = itemView.findViewById(R.id.tvItemMovieSubTitle)
+        val tvItemMovieLink: TextView = itemView.findViewById(R.id.tvItemMovieLink)
+        val tvItemMovieActor: TextView = itemView.findViewById(R.id.tvItemMovieActor)
     }
 }
 

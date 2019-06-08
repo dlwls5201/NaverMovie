@@ -28,13 +28,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
     //library
     implementation "androidx.appcompat:appcompat:$library_version"
     implementation "com.google.android.material:material:$library_version"
