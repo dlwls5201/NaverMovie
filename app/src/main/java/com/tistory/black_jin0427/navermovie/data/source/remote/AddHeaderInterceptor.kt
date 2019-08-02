@@ -1,8 +1,7 @@
-package com.tistory.black_jin0427.navermovie.api
+package com.tistory.black_jin0427.navermovie.data.source.remote
 
 import com.tistory.black_jin0427.navermovie.BuildConfig
 import okhttp3.Interceptor
-import okhttp3.Response
 
 // https://github.com/square/okhttp/wiki/Interceptors
 class AddHeaderInterceptor : Interceptor {

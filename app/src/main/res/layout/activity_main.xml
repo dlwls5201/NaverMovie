@@ -27,10 +27,18 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvActivityMain"
+            android:id="@+id/rvActivityMainBook"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/rv_book_height"
+            app:layout_constraintTop_toBottomOf="@+id/tbActivityMain"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvActivityMainMovie"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/tbActivityMain"
+            app:layout_constraintTop_toBottomOf="@+id/rvActivityMainBook"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -39,8 +47,8 @@
             android:id="@+id/pbActivityMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/rvActivityMain"
-            app:layout_constraintBottom_toBottomOf="@+id/rvActivityMain"
+            app:layout_constraintTop_toTopOf="@+id/rvActivityMainBook"
+            app:layout_constraintBottom_toBottomOf="@+id/rvActivityMainMovie"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -50,8 +58,8 @@
             android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@+id/rvActivityMain"
-            app:layout_constraintBottom_toBottomOf="@+id/rvActivityMain"
+            app:layout_constraintTop_toTopOf="@+id/rvActivityMainBook"
+            app:layout_constraintBottom_toBottomOf="@+id/rvActivityMainMovie"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

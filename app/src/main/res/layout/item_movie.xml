@@ -37,29 +37,29 @@
                 tools:text="Black Jin"/>
 
         <TextView
-                android:id="@+id/tvItemMovieSubTitle"
+                android:id="@+id/tvItemMovieDirector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:textColor="@android:color/black"
                 android:textSize="15sp"
-                tools:text="tistory"/>
-
-        <TextView
-                android:id="@+id/tvItemMovieLink"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                tools:text="black-jin0427.tistory.com"/>
+                tools:text="감독"/>
 
         <TextView
                 android:id="@+id/tvItemMovieActor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                tools:text="배우"/>
+
+        <TextView
+                android:id="@+id/tvItemMovieRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textColor="@color/colorAccent"
                 android:textSize="15sp"
-                tools:text="actor"/>
+                tools:text="별점"/>
 
     </LinearLayout>
 
