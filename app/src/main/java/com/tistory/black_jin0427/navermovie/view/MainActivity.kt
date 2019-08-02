@@ -9,8 +9,8 @@ import com.tistory.black_jin0427.navermovie.BaseActivity
 import com.tistory.black_jin0427.navermovie.R
 import com.tistory.black_jin0427.navermovie.data.repository.BookRepositoryImpl
 import com.tistory.black_jin0427.navermovie.data.repository.MovieRepositoryImpl
-import com.tistory.black_jin0427.navermovie.data.response.BookResponse
-import com.tistory.black_jin0427.navermovie.data.response.MovieResponse
+import com.tistory.black_jin0427.navermovie.domain.model.BookItem
+import com.tistory.black_jin0427.navermovie.domain.model.MovieItem
 import com.tistory.black_jin0427.navermovie.data.source.remote.RemoteClient
 import com.tistory.black_jin0427.navermovie.constant.AppSchedulerProvider
 import com.tistory.black_jin0427.navermovie.domain.usecase.GetContentsUsecase
@@ -26,8 +26,8 @@ class MainActivity : BaseActivity() {
     private val movieAdapter by lazy {
         MovieAdapter().apply {
             setClickListener(object : MovieAdapter.OnItemClickListener {
-                override fun onClick(movieResponse: MovieResponse) {
-                    toast(movieResponse.title)
+                override fun onClick(movieItem: MovieItem) {
+                    toast(movieItem.title)
                 }
             })
         }
@@ -36,8 +36,8 @@ class MainActivity : BaseActivity() {
     private val bookAdapter by lazy {
         BookAdapter().apply {
             setClickListener(object : BookAdapter.OnItemClickListener {
-                override fun onClick(bookResponse: BookResponse) {
-                    toast(bookResponse.title)
+                override fun onClick(bookItem: BookItem) {
+                    toast(bookItem.title)
                 }
             })
         }
@@ -99,8 +99,8 @@ class MainActivity : BaseActivity() {
             hideProgress()
         }.subscribe({
             emptySearchView()
-            movieAdapter.setItems(it.movies)
-            bookAdapter.setItems(it.books)
+            movieAdapter.setItems(it.movieItems)
+            bookAdapter.setItems(it.bookItems)
         }) {
             Dlog.e(it.message)
         }.also {

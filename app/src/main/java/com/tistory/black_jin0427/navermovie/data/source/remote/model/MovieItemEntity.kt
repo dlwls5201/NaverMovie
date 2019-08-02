@@ -2,7 +2,7 @@ package com.tistory.black_jin0427.navermovie.data.source.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class MovieItem(
+data class MovieItemEntity(
     @field:SerializedName("title") val title: String,
     @field:SerializedName("link") val link: String,
     @field:SerializedName("image") val image: String,

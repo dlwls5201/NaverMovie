@@ -7,8 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.black_jin0427.navermovie.R
-import com.tistory.black_jin0427.navermovie.data.response.BookResponse
-import com.tistory.black_jin0427.navermovie.data.response.MovieResponse
+import com.tistory.black_jin0427.navermovie.domain.model.BookItem
 import com.tistory.black_jin0427.navermovie.extension.setImageWithGlide
 import com.tistory.black_jin0427.navermovie.extension.setTextFromHtml
 
@@ -17,7 +16,7 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
 
     private var clickListener: OnItemClickListener? = null
 
-    private var items = listOf<BookResponse>()
+    private var items = listOf<BookItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MovieHolder(
@@ -45,7 +44,7 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
         }
     }
 
-    fun setItems(items: List<BookResponse>) {
+    fun setItems(items: List<BookItem>) {
         this.items = items
         notifyDataSetChanged()
     }
@@ -55,7 +54,7 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
     }
 
     interface OnItemClickListener {
-        fun onClick(bookResponse: BookResponse)
+        fun onClick(bookItem: BookItem)
     }
 
     class MovieHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

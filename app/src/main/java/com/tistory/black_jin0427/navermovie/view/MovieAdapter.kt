@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.black_jin0427.navermovie.R
-import com.tistory.black_jin0427.navermovie.data.response.MovieResponse
+import com.tistory.black_jin0427.navermovie.domain.model.MovieItem
 import com.tistory.black_jin0427.navermovie.extension.setImageWithGlide
 import com.tistory.black_jin0427.navermovie.extension.setTextFromHtml
 
@@ -16,7 +16,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
 
     private var clickListener: OnItemClickListener? = null
 
-    private var items = listOf<MovieResponse>()
+    private var items = listOf<MovieItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MovieHolder(
@@ -48,7 +48,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
         }
     }
 
-    fun setItems(items: List<MovieResponse>) {
+    fun setItems(items: List<MovieItem>) {
         this.items = items
         notifyDataSetChanged()
     }
@@ -58,7 +58,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
     }
 
     interface OnItemClickListener {
-        fun onClick(movieResponse: MovieResponse)
+        fun onClick(movieItem: MovieItem)
     }
 
     class MovieHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -1,6 +1,6 @@
-package com.tistory.black_jin0427.navermovie.data.response
+package com.tistory.black_jin0427.navermovie.domain.model
 
-data class MovieResponse(
+data class MovieItem(
     val title: String,
     val image: String,
     val director: String,
