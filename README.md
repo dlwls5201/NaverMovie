@@ -14,3 +14,8 @@
 MOVIE_CLIENT_ID = "Client_ID"
 MOVIE_CLIENT_SECRET = "Client_Secret"
 ```
+
+## Model편
+
+Prenent, Domain, Data 레이어 구분</br>
+[블로그](https://black-jin0427.tistory.com/225)
