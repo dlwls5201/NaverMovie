@@ -1,4 +1,4 @@
-package com.tistory.black_jin0427.navermovie.view
+package com.tistory.black_jin0427.navermovie.presentation
 
 import android.os.Bundle
 import android.view.View
@@ -7,13 +7,15 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tistory.black_jin0427.navermovie.BaseActivity
 import com.tistory.black_jin0427.navermovie.R
+import com.tistory.black_jin0427.navermovie.constant.AppSchedulerProvider
 import com.tistory.black_jin0427.navermovie.data.repository.BookRepositoryImpl
 import com.tistory.black_jin0427.navermovie.data.repository.MovieRepositoryImpl
-import com.tistory.black_jin0427.navermovie.domain.model.BookItem
-import com.tistory.black_jin0427.navermovie.domain.model.MovieItem
+import com.tistory.black_jin0427.navermovie.data.source.remote.NaverRemoteDataSourceImpl
 import com.tistory.black_jin0427.navermovie.data.source.remote.RemoteClient
-import com.tistory.black_jin0427.navermovie.constant.AppSchedulerProvider
 import com.tistory.black_jin0427.navermovie.domain.usecase.GetContentsUsecase
+import com.tistory.black_jin0427.navermovie.presentation.model.BookItem
+import com.tistory.black_jin0427.navermovie.presentation.model.MovieItem
+import com.tistory.black_jin0427.navermovie.presentation.model.mapToPresentation
 import com.tistory.black_jin0427.navermovie.utils.Dlog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -64,9 +66,9 @@ class MainActivity : BaseActivity() {
 
                 text.let { query ->
                     if (query.isNullOrEmpty()) {
-                        showEmptyData()
+                        showEmptyText()
                     } else {
-                        hideEmptyData()
+                        hideEmptyText()
                         loadData(query)
                     }
 
@@ -90,19 +92,25 @@ class MainActivity : BaseActivity() {
     private fun loadData(query: String) {
 
         GetContentsUsecase(
-            BookRepositoryImpl(RemoteClient.naverMovieService),
-            MovieRepositoryImpl(RemoteClient.naverMovieService),
+            BookRepositoryImpl(
+                NaverRemoteDataSourceImpl(RemoteClient.naverService)
+            ),
+            MovieRepositoryImpl(
+                NaverRemoteDataSourceImpl(RemoteClient.naverService)
+            ),
             AppSchedulerProvider
         ).get(query).doOnSubscribe {
             showProgress()
         }.doOnSuccess {
             hideProgress()
         }.subscribe({
-            emptySearchView()
-            movieAdapter.setItems(it.movieItems)
-            bookAdapter.setItems(it.bookItems)
+            emptySearchText()
+            bookAdapter.setItems(it.first.mapToPresentation())
+            movieAdapter.setItems(it.second.mapToPresentation())
         }) {
             Dlog.e(it.message)
+            toast(it.message.toString())
+            hideProgress()
         }.also {
             compositeDisposable.add(it)
         }
@@ -116,15 +124,15 @@ class MainActivity : BaseActivity() {
         pbActivityMain.visibility = View.GONE
     }
 
-    private fun showEmptyData() {
+    private fun showEmptyText() {
         tvActivityMainEmptyData.visibility = View.VISIBLE
     }
 
-    private fun hideEmptyData() {
+    private fun hideEmptyText() {
         tvActivityMainEmptyData.visibility = View.GONE
     }
 
-    private fun emptySearchView() {
+    private fun emptySearchText() {
         svActivityMain.setQuery("", false)
     }
 }

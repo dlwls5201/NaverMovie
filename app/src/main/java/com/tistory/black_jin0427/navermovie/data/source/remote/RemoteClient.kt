@@ -11,10 +11,10 @@ object RemoteClient {
 
     private const val baseUrl = "https://openapi.naver.com/v1/"
 
-    val naverMovieService: NaverService
+    val naverService: NaverService
 
     init {
-        naverMovieService =
+        naverService =
             makeNaverMovieService(BuildConfig.DEBUG)
     }
 

@@ -1,4 +1,4 @@
-package com.tistory.black_jin0427.navermovie.view
+package com.tistory.black_jin0427.navermovie.presentation
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.black_jin0427.navermovie.R
-import com.tistory.black_jin0427.navermovie.domain.model.BookItem
+import com.tistory.black_jin0427.navermovie.domain.model.BookItemEntity
 import com.tistory.black_jin0427.navermovie.extension.setImageWithGlide
 import com.tistory.black_jin0427.navermovie.extension.setTextFromHtml
+import com.tistory.black_jin0427.navermovie.presentation.model.BookItem
 
 
 class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
