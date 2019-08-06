@@ -92,10 +92,10 @@ class MainActivity : BaseActivity() {
     private fun loadData(query: String) {
 
         GetContentsUsecase(
-            BookRepositoryImpl(
+            BookRepositoryImpl.getInstance(
                 NaverRemoteDataSourceImpl(RemoteClient.naverService)
             ),
-            MovieRepositoryImpl(
+            MovieRepositoryImpl.getInstance(
                 NaverRemoteDataSourceImpl(RemoteClient.naverService)
             ),
             AppSchedulerProvider

@@ -12,4 +12,14 @@ class MovieRepositoryImpl(
         return remoteDataSource.getMovie(query)
 
     }
+
+    companion object {
+
+        private var INSTANCE: MovieRepositoryImpl? = null
+
+        fun getInstance(remoteDataSource: NaverRemoteDataSource) : MovieRepositoryImpl =
+            INSTANCE ?: MovieRepositoryImpl(remoteDataSource).apply {
+                INSTANCE = this
+            }
+    }
 }

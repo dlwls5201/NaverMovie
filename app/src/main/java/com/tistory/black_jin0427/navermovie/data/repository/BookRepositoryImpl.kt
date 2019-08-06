@@ -12,4 +12,14 @@ class BookRepositoryImpl(
         return remoteDataSource.getBook(query)
 
     }
+
+    companion object {
+
+        private var INSTANCE: BookRepositoryImpl? = null
+
+        fun getInstance(remoteDataSource: NaverRemoteDataSource) : BookRepository =
+            INSTANCE ?: BookRepositoryImpl(remoteDataSource).apply {
+                INSTANCE = this
+            }
+    }
 }
