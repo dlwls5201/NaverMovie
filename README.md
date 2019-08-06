@@ -17,5 +17,6 @@ MOVIE_CLIENT_SECRET = "Client_Secret"
 
 ## Model편
 
-Prenent, Domain, Data 레이어 구분</br>
-[블로그](https://black-jin0427.tistory.com/225)
+1. CleanArchitecture 적용 : Prenent, Domain, Data 레이어 구분</br>
+2. Model : Domain과 Data 레이어</br></br>
+[정상에서 IT를 외치다](https://black-jin0427.tistory.com/225)
