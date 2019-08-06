@@ -13,8 +13,8 @@ data class MovieItem(
 fun MovieItemEntity.mapToPresentation(): MovieItem = MovieItem(
     title,
     image,
-    director.replace("|", ", ").dropLast(1),
-    actor.replace("|", ", ").dropLast(1),
+    director.replace("|", ", ").dropLast(2),
+    actor.replace("|", ", ").dropLast(2),
     rating.toString()
 )
 
