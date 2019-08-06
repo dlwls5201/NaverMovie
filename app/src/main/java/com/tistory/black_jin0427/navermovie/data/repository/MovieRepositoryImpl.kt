@@ -17,7 +17,7 @@ class MovieRepositoryImpl(
 
         private var INSTANCE: MovieRepositoryImpl? = null
 
-        fun getInstance(remoteDataSource: NaverRemoteDataSource) : MovieRepositoryImpl =
+        fun getInstance(remoteDataSource: NaverRemoteDataSource) : MovieRepository =
             INSTANCE ?: MovieRepositoryImpl(remoteDataSource).apply {
                 INSTANCE = this
             }

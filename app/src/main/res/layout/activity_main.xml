@@ -47,10 +47,12 @@
             android:id="@+id/pbActivityMain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="@+id/rvActivityMainBook"
             app:layout_constraintBottom_toBottomOf="@+id/rvActivityMainMovie"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible"/>
 
     <TextView
             android:id="@+id/tvActivityMainEmptyData"
@@ -58,9 +60,11 @@
             android:textSize="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintTop_toTopOf="@+id/rvActivityMainBook"
             app:layout_constraintBottom_toBottomOf="@+id/rvActivityMainMovie"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

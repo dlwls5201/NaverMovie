@@ -49,8 +49,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        hideProgress()
-
         with(rvActivityMainMovie) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = movieAdapter
