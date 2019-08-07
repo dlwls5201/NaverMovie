@@ -17,7 +17,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
 
     private var clickListener: OnItemClickListener? = null
 
-    private var items = listOf<MovieItem>()
+    private var items = mutableListOf<MovieItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MovieHolder(
@@ -49,8 +49,14 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
         }
     }
 
-    fun setItems(items: List<MovieItem>) {
-        this.items = items
+    fun setItems(items: MutableList<MovieItem>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        this.items.clear()
         notifyDataSetChanged()
     }
 

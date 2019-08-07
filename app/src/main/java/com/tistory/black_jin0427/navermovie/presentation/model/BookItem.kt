@@ -12,4 +12,4 @@ fun BookItemEntity.mapToPresentation(): BookItem = BookItem(
     image
 )
 
-fun List<BookItemEntity>.mapToPresentation(): List<BookItem> = map { it.mapToPresentation() }
+fun List<BookItemEntity>.mapToPresentation(): MutableList<BookItem> = map { it.mapToPresentation() }.toMutableList()

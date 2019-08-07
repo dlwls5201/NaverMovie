@@ -17,7 +17,7 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
 
     private var clickListener: OnItemClickListener? = null
 
-    private var items = listOf<BookItem>()
+    private var items = mutableListOf<BookItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MovieHolder(
@@ -45,8 +45,14 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
         }
     }
 
-    fun setItems(items: List<BookItem>) {
-        this.items = items
+    fun setItems(items: MutableList<BookItem>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        this.items.clear()
         notifyDataSetChanged()
     }
 

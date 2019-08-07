@@ -84,7 +84,7 @@ class MainActivity : BaseActivity() {
             override fun onQueryTextSubmit(text: String?): Boolean {
 
                 text.let { query ->
-                    Dlog.e("query : $query")
+                    //Dlog.e("query : $query")
                     if (query.isNullOrEmpty()) {
                         showEmptyText()
                     } else {
@@ -120,12 +120,23 @@ class MainActivity : BaseActivity() {
                 hideProgress()
             }.subscribe({
                 emptySearchText()
-                if (it.first.isEmpty() && it.second.isEmpty()) {
+
+                if(it.first.isEmpty()) {
+                    bookAdapter.clear()
+                } else {
+                    bookAdapter.setItems(it.first.mapToPresentation())
+                }
+
+                if(it.second.isEmpty()) {
+                    movieAdapter.clear()
+                } else {
+                    movieAdapter.setItems(it.second.mapToPresentation())
+                }
+
+                if(it.first.isEmpty() && it.second.isEmpty()) {
                     showEmptyText()
                 } else {
                     hideEmptyText()
-                    bookAdapter.setItems(it.first.mapToPresentation())
-                    movieAdapter.setItems(it.second.mapToPresentation())
                 }
 
             }) {

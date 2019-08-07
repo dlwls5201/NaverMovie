@@ -18,4 +18,4 @@ fun MovieItemEntity.mapToPresentation(): MovieItem = MovieItem(
     rating.toString()
 )
 
-fun List<MovieItemEntity>.mapToPresentation(): List<MovieItem> = map { it.mapToPresentation() }
+fun List<MovieItemEntity>.mapToPresentation(): MutableList<MovieItem> = map { it.mapToPresentation() }.toMutableList()
