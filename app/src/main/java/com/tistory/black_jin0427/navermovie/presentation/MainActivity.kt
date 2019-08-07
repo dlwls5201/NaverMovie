@@ -49,24 +49,45 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initView()
+        showEmptyText()
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
+    }
+
+    private fun initView() {
+        initBookRecyclerView()
+        initMovieRecyclerView()
+        initSearchView()
+    }
+
+    private fun initBookRecyclerView() {
         with(rvActivityMainMovie) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = movieAdapter
         }
+    }
 
+    private fun initMovieRecyclerView() {
         with(rvActivityMainBook) {
             layoutManager = LinearLayoutManager(this@MainActivity, LinearLayout.HORIZONTAL, false)
             adapter = bookAdapter
         }
 
+    }
+
+    private fun initSearchView() {
         svActivityMain.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(text: String?): Boolean {
 
                 text.let { query ->
+                    Dlog.e("query : $query")
                     if (query.isNullOrEmpty()) {
                         showEmptyText()
                     } else {
-                        hideEmptyText()
                         loadData(query)
                     }
 
@@ -82,11 +103,6 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    override fun onDestroy() {
-        compositeDisposable.clear()
-        super.onDestroy()
-    }
-
     private fun loadData(query: String) {
 
         GetContentsUsecase(
@@ -97,21 +113,28 @@ class MainActivity : BaseActivity() {
                 NaverRemoteDataSourceImpl(RemoteClient.naverService)
             ),
             AppSchedulerProvider
-        ).get(query).doOnSubscribe {
-            showProgress()
-        }.doOnSuccess {
-            hideProgress()
-        }.subscribe({
-            emptySearchText()
-            bookAdapter.setItems(it.first.mapToPresentation())
-            movieAdapter.setItems(it.second.mapToPresentation())
-        }) {
-            Dlog.e(it.message)
-            toast(it.message.toString())
-            hideProgress()
-        }.also {
-            compositeDisposable.add(it)
-        }
+        ).get(query)
+            .doOnSubscribe {
+                showProgress()
+            }.doOnSuccess {
+                hideProgress()
+            }.subscribe({
+                emptySearchText()
+                if (it.first.isEmpty() && it.second.isEmpty()) {
+                    showEmptyText()
+                } else {
+                    hideEmptyText()
+                    bookAdapter.setItems(it.first.mapToPresentation())
+                    movieAdapter.setItems(it.second.mapToPresentation())
+                }
+
+            }) {
+                Dlog.e(it.message)
+                showErrorMessage()
+                hideProgress()
+            }.also {
+                compositeDisposable.add(it)
+            }
     }
 
     private fun showProgress() {
@@ -132,5 +155,9 @@ class MainActivity : BaseActivity() {
 
     private fun emptySearchText() {
         svActivityMain.setQuery("", false)
+    }
+
+    private fun showErrorMessage() {
+        toast("error")
     }
 }
