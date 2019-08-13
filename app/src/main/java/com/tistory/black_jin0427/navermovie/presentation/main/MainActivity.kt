@@ -1,4 +1,4 @@
-package com.tistory.black_jin0427.navermovie.presentation
+package com.tistory.black_jin0427.navermovie.presentation.main
 
 import android.os.Bundle
 import android.view.View
@@ -27,7 +27,8 @@ class MainActivity : BaseActivity() {
 
     private val movieAdapter by lazy {
         MovieAdapter().apply {
-            setClickListener(object : MovieAdapter.OnItemClickListener {
+            setClickListener(object :
+                MovieAdapter.OnItemClickListener {
                 override fun onClick(movieItem: MovieItem) {
                     toast(movieItem.title)
                 }
@@ -37,7 +38,8 @@ class MainActivity : BaseActivity() {
 
     private val bookAdapter by lazy {
         BookAdapter().apply {
-            setClickListener(object : BookAdapter.OnItemClickListener {
+            setClickListener(object :
+                BookAdapter.OnItemClickListener {
                 override fun onClick(bookItem: BookItem) {
                     toast(bookItem.title)
                 }
