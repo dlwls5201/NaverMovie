@@ -17,13 +17,12 @@ import com.tistory.black_jin0427.navermovie.presentation.model.BookItem
 import com.tistory.black_jin0427.navermovie.presentation.model.MovieItem
 import com.tistory.black_jin0427.navermovie.presentation.model.mapToPresentation
 import com.tistory.black_jin0427.navermovie.utils.Dlog
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), MainContract.View {
 
-    private val compositeDisposable = CompositeDisposable()
+    private lateinit var presenter: MainPresenter
 
     private val movieAdapter by lazy {
         MovieAdapter().apply {
@@ -51,12 +50,24 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        presenter = MainPresenter(
+            this,
+            GetContentsUsecase(
+                BookRepositoryImpl.getInstance(
+                    NaverRemoteDataSourceImpl(RemoteClient.naverService)
+                ),
+                MovieRepositoryImpl.getInstance(
+                    NaverRemoteDataSourceImpl(RemoteClient.naverService)
+                ),
+                AppSchedulerProvider
+            )
+        )
+
         initView()
-        showEmptyText()
     }
 
     override fun onDestroy() {
-        compositeDisposable.clear()
+        presenter.detachView()
         super.onDestroy()
     }
 
@@ -64,6 +75,7 @@ class MainActivity : BaseActivity() {
         initBookRecyclerView()
         initMovieRecyclerView()
         initSearchView()
+        showEmptyText()
     }
 
     private fun initBookRecyclerView() {
@@ -90,7 +102,7 @@ class MainActivity : BaseActivity() {
                     if (query.isNullOrEmpty()) {
                         showEmptyText()
                     } else {
-                        loadData(query)
+                        presenter.loadData(query)
                     }
 
                 }
@@ -105,72 +117,43 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    private fun loadData(query: String) {
-
-        GetContentsUsecase(
-            BookRepositoryImpl.getInstance(
-                NaverRemoteDataSourceImpl(RemoteClient.naverService)
-            ),
-            MovieRepositoryImpl.getInstance(
-                NaverRemoteDataSourceImpl(RemoteClient.naverService)
-            ),
-            AppSchedulerProvider
-        ).get(query)
-            .doOnSubscribe {
-                showProgress()
-            }.doOnSuccess {
-                hideProgress()
-            }.subscribe({
-                emptySearchText()
-
-                if(it.first.isEmpty()) {
-                    bookAdapter.clear()
-                } else {
-                    bookAdapter.setItems(it.first.mapToPresentation())
-                }
-
-                if(it.second.isEmpty()) {
-                    movieAdapter.clear()
-                } else {
-                    movieAdapter.setItems(it.second.mapToPresentation())
-                }
-
-                if(it.first.isEmpty() && it.second.isEmpty()) {
-                    showEmptyText()
-                } else {
-                    hideEmptyText()
-                }
-
-            }) {
-                Dlog.e(it.message)
-                showErrorMessage()
-                hideProgress()
-            }.also {
-                compositeDisposable.add(it)
-            }
-    }
-
-    private fun showProgress() {
+    override fun showProgress() {
         pbActivityMain.visibility = View.VISIBLE
     }
 
-    private fun hideProgress() {
+    override fun hideProgress() {
         pbActivityMain.visibility = View.GONE
     }
 
-    private fun showEmptyText() {
+    override fun showEmptyText() {
         tvActivityMainEmptyData.visibility = View.VISIBLE
     }
 
-    private fun hideEmptyText() {
+    override fun hideEmptyText() {
         tvActivityMainEmptyData.visibility = View.GONE
     }
 
-    private fun emptySearchText() {
+    override fun showBookItems(items: MutableList<BookItem>) {
+        bookAdapter.setItems(items)
+    }
+
+    override fun showMovieItems(items: MutableList<MovieItem>) {
+        movieAdapter.setItems(items)
+    }
+
+    override fun showBookItemsCleared() {
+        bookAdapter.clear()
+    }
+
+    override fun showMovieItemsCleared() {
+       movieAdapter.clear()
+    }
+
+    override fun showSearchTextEmpty() {
         svActivityMain.setQuery("", false)
     }
 
-    private fun showErrorMessage() {
-        toast("error")
+    override fun showToast(msg: String) {
+        toast(msg)
     }
 }
