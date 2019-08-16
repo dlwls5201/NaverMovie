@@ -48,6 +48,14 @@ dependencies {
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    // dagger
+    implementation "com.google.dagger:dagger:$dagger_vserion"
+    implementation "com.google.dagger:dagger-android:$dagger_vserion"
+    implementation "com.google.dagger:dagger-android-support:$dagger_vserion"
+
+    kapt "com.google.dagger:dagger-android-processor:$dagger_vserion"
+    kapt "com.google.dagger:dagger-compiler:$dagger_vserion"
+
     //room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"

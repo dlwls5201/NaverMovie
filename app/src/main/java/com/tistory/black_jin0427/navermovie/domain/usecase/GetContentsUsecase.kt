@@ -18,6 +18,7 @@ class GetContentsUsecase(
 ) : SingleUseCase<Pair<List<BookItemEntity>, List<MovieItemEntity>>, String>(
     schedulersProvider
 ) {
+
     override fun buildUseCaseSingle(params: String): Single<Pair<List<BookItemEntity>, List<MovieItemEntity>>> {
         return Single.zip(
             bookRepository.get(params),

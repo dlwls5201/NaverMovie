@@ -1,12 +1,5 @@
 package com.tistory.black_jin0427.navermovie
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import dagger.android.support.DaggerAppCompatActivity
 
-abstract class BaseActivity:  AppCompatActivity(){
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-}
+abstract class BaseActivity : DaggerAppCompatActivity()

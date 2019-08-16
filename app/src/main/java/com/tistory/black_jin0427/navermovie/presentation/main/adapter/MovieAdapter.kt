@@ -1,4 +1,4 @@
-package com.tistory.black_jin0427.navermovie.presentation.main
+package com.tistory.black_jin0427.navermovie.presentation.main.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,21 +7,23 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.tistory.black_jin0427.navermovie.R
+import com.tistory.black_jin0427.navermovie.di.scope.ActivityScope
 import com.tistory.black_jin0427.navermovie.extension.setImageWithGlide
 import com.tistory.black_jin0427.navermovie.extension.setTextFromHtml
-import com.tistory.black_jin0427.navermovie.presentation.model.BookItem
+import com.tistory.black_jin0427.navermovie.presentation.model.MovieItem
+import javax.inject.Inject
 
-
-class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
+@ActivityScope
+class MovieAdapter @Inject constructor(): RecyclerView.Adapter<MovieAdapter.MovieHolder>() {
 
     private var clickListener: OnItemClickListener? = null
 
-    private var items = mutableListOf<BookItem>()
+    private var items = mutableListOf<MovieItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MovieHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.item_book,
+                R.layout.item_movie,
                 parent,
                 false
             )
@@ -36,7 +38,11 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
         with(holder) {
 
             ivItemMovie.setImageWithGlide(item.image)
-            tvItemBookTitle.setTextFromHtml(item.title)
+
+            tvItemMovieTitle.setTextFromHtml(item.title)
+            tvItemMovieDirector.text = "감독 : " + item.director
+            tvItemMovieActor.text = "배우 : " + item.actor
+            tvItemMovieRating.text = "별점 : " + item.rating
 
             itemView.setOnClickListener {
                 clickListener?.onClick(item)
@@ -44,7 +50,7 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
         }
     }
 
-    fun setItems(items: MutableList<BookItem>) {
+    fun setItems(items: MutableList<MovieItem>) {
         this.items.clear()
         this.items.addAll(items)
         notifyDataSetChanged()
@@ -60,13 +66,16 @@ class BookAdapter : RecyclerView.Adapter<BookAdapter.MovieHolder>() {
     }
 
     interface OnItemClickListener {
-        fun onClick(bookItem: BookItem)
+        fun onClick(movieItem: MovieItem)
     }
 
     class MovieHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val ivItemMovie: ImageView = itemView.findViewById(R.id.ivItemBook)
-        val tvItemBookTitle: TextView = itemView.findViewById(R.id.tvItemBookTitle)
+        val ivItemMovie: ImageView = itemView.findViewById(R.id.ivItemMovie)
+        val tvItemMovieTitle: TextView = itemView.findViewById(R.id.tvItemMovieTitle)
+        val tvItemMovieDirector: TextView = itemView.findViewById(R.id.tvItemMovieDirector)
+        val tvItemMovieActor: TextView = itemView.findViewById(R.id.tvItemMovieActor)
+        val tvItemMovieRating: TextView = itemView.findViewById(R.id.tvItemMovieRating)
     }
 }
 

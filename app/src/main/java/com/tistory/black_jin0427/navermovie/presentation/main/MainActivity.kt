@@ -1,5 +1,6 @@
 package com.tistory.black_jin0427.navermovie.presentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -7,63 +8,33 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tistory.black_jin0427.navermovie.BaseActivity
 import com.tistory.black_jin0427.navermovie.R
-import com.tistory.black_jin0427.navermovie.constant.AppSchedulerProvider
-import com.tistory.black_jin0427.navermovie.data.repository.BookRepositoryImpl
-import com.tistory.black_jin0427.navermovie.data.repository.MovieRepositoryImpl
-import com.tistory.black_jin0427.navermovie.data.source.remote.NaverRemoteDataSourceImpl
-import com.tistory.black_jin0427.navermovie.data.source.remote.RemoteClient
-import com.tistory.black_jin0427.navermovie.domain.usecase.GetContentsUsecase
+import com.tistory.black_jin0427.navermovie.presentation.main.adapter.BookAdapter
+import com.tistory.black_jin0427.navermovie.presentation.main.adapter.MovieAdapter
 import com.tistory.black_jin0427.navermovie.presentation.model.BookItem
 import com.tistory.black_jin0427.navermovie.presentation.model.MovieItem
-import com.tistory.black_jin0427.navermovie.presentation.model.mapToPresentation
 import com.tistory.black_jin0427.navermovie.utils.Dlog
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.toast
+import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract.View {
 
-    private lateinit var presenter: MainPresenter
+    @Inject
+    lateinit var presenter: MainContract.Presenter
 
-    private val movieAdapter by lazy {
-        MovieAdapter().apply {
-            setClickListener(object :
-                MovieAdapter.OnItemClickListener {
-                override fun onClick(movieItem: MovieItem) {
-                    toast(movieItem.title)
-                }
-            })
-        }
-    }
+    @Inject
+    lateinit var movieAdapter: MovieAdapter
 
-    private val bookAdapter by lazy {
-        BookAdapter().apply {
-            setClickListener(object :
-                BookAdapter.OnItemClickListener {
-                override fun onClick(bookItem: BookItem) {
-                    toast(bookItem.title)
-                }
-            })
-        }
-    }
+    @Inject
+    lateinit var bookAdapter: BookAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        presenter = MainPresenter(
-            this,
-            GetContentsUsecase(
-                BookRepositoryImpl.getInstance(
-                    NaverRemoteDataSourceImpl(RemoteClient.naverService)
-                ),
-                MovieRepositoryImpl.getInstance(
-                    NaverRemoteDataSourceImpl(RemoteClient.naverService)
-                ),
-                AppSchedulerProvider
-            )
-        )
-
         initView()
+        initAdapterListener()
+        Dlog.e("movieAdapter ; ${movieAdapter.hashCode()} , bookAdapter : ${bookAdapter.hashCode()}")
     }
 
     override fun onDestroy() {
@@ -117,6 +88,34 @@ class MainActivity : BaseActivity(), MainContract.View {
         })
     }
 
+    private fun initAdapterListener() {
+
+        movieAdapter.apply {
+            setClickListener(object :
+                MovieAdapter.OnItemClickListener {
+                override fun onClick(movieItem: MovieItem) {
+                    //toast(movieItem.title)
+                    goToMainAcitivty()
+                }
+            })
+        }
+
+        bookAdapter.apply {
+            setClickListener(object :
+                BookAdapter.OnItemClickListener {
+                override fun onClick(bookItem: BookItem) {
+                    //toast(bookItem.title)
+                    goToMainAcitivty()
+                }
+            })
+        }
+    }
+
+    //TODO test
+    private fun goToMainAcitivty() {
+        startActivity(Intent(this, MainActivity::class.java))
+    }
+
     override fun showProgress() {
         pbActivityMain.visibility = View.VISIBLE
     }
@@ -146,7 +145,7 @@ class MainActivity : BaseActivity(), MainContract.View {
     }
 
     override fun showMovieItemsCleared() {
-       movieAdapter.clear()
+        movieAdapter.clear()
     }
 
     override fun showSearchTextEmpty() {

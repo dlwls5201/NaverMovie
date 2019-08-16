@@ -1,11 +1,13 @@
 package com.tistory.black_jin0427.navermovie
 
-import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import com.tistory.black_jin0427.navermovie.di.DaggerAppComponent
+import dagger.android.AndroidInjector
+import dagger.android.DaggerApplication
 
-class BaseApplication: Application() {
+class BaseApplication : DaggerApplication() {
 
     companion object {
 
@@ -16,6 +18,10 @@ class BaseApplication: Application() {
         super.onCreate()
 
         DEBUG = isDebuggable(this)
+    }
+
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.builder().application(this).build()
     }
 
     /**
